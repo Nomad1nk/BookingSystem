@@ -1,10 +1,9 @@
-// frontend/app/success/page.tsx
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import axios from "axios";
 
-export default function SuccessPage() {
+function SuccessContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const bookingId = searchParams.get("booking_id");
@@ -12,8 +11,10 @@ export default function SuccessPage() {
   useEffect(() => {
     if (bookingId) {
       // Төлбөр төлөгдсөн тул захиалгыг баталгаажуулах
+      // Note: localhost will not work in production. You should use an environment variable.
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
       axios
-        .patch(`http://localhost:3000/bookings/${bookingId}/confirm`)
+        .patch(`${apiUrl}/bookings/${bookingId}/confirm`)
         .then(() => console.log("Booking confirmed"))
         .catch((err) => console.error(err));
     }
@@ -32,5 +33,13 @@ export default function SuccessPage() {
         Нүүр хуудас руу буцах
       </button>
     </div>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={<div className="p-10 text-center">Loading...</div>}>
+      <SuccessContent />
+    </Suspense>
   );
 }
