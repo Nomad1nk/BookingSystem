@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8f9fa;
+  --foreground: #171717;
+}
+
+body {
+  color: var(--foreground);
+  background: transparent;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Clock Animations */
+@keyframes spin {
+  from {
+    transform: translate(-50%, -100%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -100%) rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin 21600s linear infinite;
+  /* 6 hours for full rotation (slow) */
+}
+
+.animate-spin-medium {
+  animation: spin 3600s linear infinite;
+  /* 1 hour */
+}
+
+.animate-spin-fast {
+  animation: spin 60s linear infinite;
+  /* 1 minute */
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

@@ -1,0 +1,51 @@
+// backend/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  password  String
+  name      String
+  phone     String?
+  bookings  Booking[]
+  createdAt DateTime  @default(now())
+}
+
+model Staff {
+  id        Int       @id @default(autoincrement())
+  name      String
+  bookings  Booking[]
+  // Staff can have many services (Many-to-Many logic can be added later)
+}
+
+model Service {
+  id        Int       @id @default(autoincrement())
+  name      String
+  duration  Int       // in minutes
+  price     Int
+  bookings  Booking[] // Simplified for now
+}
+
+model Booking {
+  id        Int      @id @default(autoincrement())
+  startTime DateTime
+  endTime   DateTime
+  status    String   @default("PENDING") // PENDING, CONFIRMED, CANCELLED
+  
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  
+  staffId   Int
+  staff     Staff    @relation(fields: [staffId], references: [id])
+
+  serviceId Int
+  service   Service  @relation(fields: [serviceId], references: [id])
+}
