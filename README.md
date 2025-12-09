@@ -48,6 +48,7 @@ A premium booking system built with modern web technologies, featuring multi-lan
    # Configure .env file with DATABASE_URL and STRIPE_SECRET_KEY
    npx prisma migrate dev
    npm run start:dev
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
    ```
 
 3. **Setup Frontend / フロントエンドの設定**
@@ -58,4 +59,4 @@ A premium booking system built with modern web technologies, featuring multi-lan
    ```
 
 4. **Access the App / アプリにアクセス**
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+   Open [http://localhost:3001](http://localhost:3001) in your browser.
