@@ -70,7 +70,8 @@ export default function Home() {
   const handleCreateService = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/services", {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      await axios.post(`${apiUrl}/services`, {
         name: formData.name,
         duration: Number(formData.duration),
         price: Number(formData.price),
@@ -86,7 +87,8 @@ export default function Home() {
   const handleDeleteService = async (id: number) => {
     if (!confirm(t.confirmDeleteService)) return;
     try {
-      await axios.delete(`http://localhost:3000/services/${id}`);
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      await axios.delete(`${apiUrl}/services/${id}`);
       setServices((prev) => prev.filter((s) => s.id !== id));
       alert(t.serviceDeleted);
     } catch (error) {
@@ -99,7 +101,8 @@ export default function Home() {
     if (!selectedService) return;
 
     try {
-      const res = await axios.post("http://localhost:3000/bookings", {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const res = await axios.post(`${apiUrl}/bookings`, {
         serviceId: selectedService.id,
         startTime: new Date(bookingData.startTime).toISOString(),
         endTime: new Date(bookingData.endTime).toISOString(),
@@ -124,7 +127,8 @@ export default function Home() {
   const handleCancelBooking = async (id: number) => {
     if (!confirm(t.confirmCancelBooking)) return;
     try {
-      await axios.delete(`http://localhost:3000/bookings/${id}`);
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      await axios.delete(`${apiUrl}/bookings/${id}`);
       setBookings((prev) => prev.filter((b) => b.id !== id));
       alert(t.bookingCanceled);
     } catch (error) {
