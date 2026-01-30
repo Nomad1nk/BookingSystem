@@ -82,6 +82,7 @@ export class BookingsService {
 
     // Stripe Checkout Session үүсгэх
     try {
+      const frontendUrl = process.env.FRONTEND_URL || 'https://bookingsystemn.vercel.app/'; // Fallback URL
       const session = await this.stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         line_items: [
@@ -95,8 +96,8 @@ export class BookingsService {
           },
         ],
         mode: 'payment',
-        success_url: `${process.env.FRONTEND_URL}/success?booking_id=${booking.id}`,
-        cancel_url: `${process.env.FRONTEND_URL}/`,
+        success_url: `${frontendUrl}/success?booking_id=${booking.id}`,
+        cancel_url: `${frontendUrl}/`,
       });
 
       return { url: session.url };
