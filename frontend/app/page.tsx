@@ -42,10 +42,11 @@ export default function Home() {
 
   const fetchData = async () => {
     try {
-      const servicesRes = await axios.get("http://localhost:3000/services");
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+      const servicesRes = await axios.get(`${apiUrl}/services`);
       setServices(servicesRes.data);
 
-      const bookingsRes = await axios.get("http://localhost:3000/bookings");
+      const bookingsRes = await axios.get(`${apiUrl}/bookings`);
       setBookings(bookingsRes.data);
     } catch (error) {
       console.error("Дата татахад алдаа гарлаа:", error);
@@ -70,7 +71,7 @@ export default function Home() {
   const handleCreateService = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
       await axios.post(`${apiUrl}/services`, {
         name: formData.name,
         duration: Number(formData.duration),
@@ -87,7 +88,7 @@ export default function Home() {
   const handleDeleteService = async (id: number) => {
     if (!confirm(t.confirmDeleteService)) return;
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
       await axios.delete(`${apiUrl}/services/${id}`);
       setServices((prev) => prev.filter((s) => s.id !== id));
       alert(t.serviceDeleted);
@@ -101,7 +102,7 @@ export default function Home() {
     if (!selectedService) return;
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
       const res = await axios.post(`${apiUrl}/bookings`, {
         serviceId: selectedService.id,
         startTime: new Date(bookingData.startTime).toISOString(),
@@ -127,7 +128,7 @@ export default function Home() {
   const handleCancelBooking = async (id: number) => {
     if (!confirm(t.confirmCancelBooking)) return;
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
       await axios.delete(`${apiUrl}/bookings/${id}`);
       setBookings((prev) => prev.filter((b) => b.id !== id));
       alert(t.bookingCanceled);

@@ -4,13 +4,13 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // CORS тохиргоо: 3001 портыг тусгайлан зөвшөөрнө
+  // CORS тохиргоо: 3000 портыг (Frontend) зөвшөөрнө
   app.enableCors({
-    origin: 'http://localhost:3001', // Frontend хаяг
+    origin: 'http://localhost:3000', // Frontend хаяг
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
 
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();

@@ -16,7 +16,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
       await axios.post(`${apiUrl}/auth/signup`, formData);
       alert(t.registerSuccess);
       router.push("/login"); // Нэвтрэх хуудас руу шилжүүлэх
