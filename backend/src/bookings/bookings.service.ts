@@ -43,13 +43,38 @@ export class BookingsService {
 
     if (!service) throw new BadRequestException('Үйлчилгээ олдсонгүй');
 
+    // --- FIX: Ажилтан болон Хэрэглэгч байгаа эсэхийг шалгах (Auto-Seed) ---
+    // 1. Ажилтан (Staff) шалгах, байхгүй бол үүсгэх
+    let staff = await this.prisma.staff.findUnique({ where: { id: 1 } });
+    if (!staff) {
+      staff = await this.prisma.staff.create({
+        data: { id: 1, name: 'Самбуу (Default)' },
+      });
+    }
+
+    // 2. Хэрэглэгч (User) шалгах, байхгүй бол түр үүсгэх (Туршилтын журмаар)
+    let user = await this.prisma.user.findUnique({ where: { id: 1 } });
+    if (!user) {
+      // Ийм тохиолдол гарах ёсгүй (Login хийсэн үед), гэхдээ аюулгүй байдлын үүднээс:
+      const hashedPassword = await import('bcrypt').then(m => m.hash('password123', 10));
+      user = await this.prisma.user.create({
+        data: {
+          id: 1,
+          email: 'test@example.com',
+          password: hashedPassword,
+          name: 'Test User',
+        },
+      });
+    }
+    // -----------------------------------------------------------------------
+
     // PENDING захиалга үүсгэх
     const booking = await this.prisma.booking.create({
       data: {
         startTime: newStart,
         endTime: newEnd,
-        user: { connect: { id: 1 } },
-        staff: { connect: { id: 1 } },
+        user: { connect: { id: user.id } },  // Олдсон эсвэл үүсгэсэн ID-г ашиглана
+        staff: { connect: { id: staff.id } }, // Олдсон эсвэл үүсгэсэн ID-г ашиглана
         service: { connect: { id: service.id } },
         status: 'PENDING',
       },
