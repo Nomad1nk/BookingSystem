@@ -4,9 +4,9 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // CORS тохиргоо: 3000 портыг (Frontend) зөвшөөрнө
+  // CORS тохиргоо: Vercel болон Localhost-ийг зөвшөөрнө
   app.enableCors({
-    origin: 'http://localhost:3000', // Frontend хаяг
+    origin: true, // Бүх хаягаас хандахыг зөвшөөрнө (Production дээр URL-аа тодорхой бичих нь дээр)
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
