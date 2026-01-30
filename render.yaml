@@ -15,12 +15,9 @@ services:
         sync: false # User must provide this manually
     autoDeploy: true
 
+databases:
   # Database Service
-  - type: psql
-    name: booking-db
-    env: docker
+  - name: booking-db
     plan: free
     databaseName: booking_db
     user: booking_user
-
-# Frontend is deployed on Vercel, so we don't need it here.
